@@ -2,7 +2,7 @@ package org.quick.bank.services;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.quick.bank.exceptions.UserNotSavedException;
+import org.quick.bank.exceptions.*;
 import org.quick.bank.models.BankCard;
 import org.quick.bank.models.CardDTO;
 import org.quick.bank.models.User;
@@ -27,19 +27,20 @@ public class UserService {
 
     @Transactional
     public void create(UserDTO dto) {
-        var user = new User();
-        if (dto.getEmail() != null) {
-            user.setEmail(dto.getEmail());
+        if (dto.getId() == null) {
+            if (dto.someoneValuesIsNull()) {
+                throw new InputDataException("Someone values of UserDTO is null.");
+            } else {
+                var user = new User();
+                user.setPassword(dto.getPassword());
+                user.setEmail(dto.getEmail());
+                user.setName(dto.getName());
+                log.info("Create user: {}", user);
+                save(user);
+            }
+        } else {
+            throw new UserAlreadyExistException("User with id :" + dto.getId() + ", Already existed");
         }
-        if (dto.getName() != null) {
-            user.setName(dto.getName());
-        }
-        if (dto.getPassword() != null) {
-            user.setPassword(dto.getPassword());
-        }
-        save(user);
-        log.info("Create user: {}", user);
-
     }
 
     @Transactional
@@ -48,12 +49,23 @@ public class UserService {
         log.info("Deleted user with id: {}", id);
     }
 
+    @Transactional
     public void save(User user) {
         if (user != null) {
             userRepository.save(user);
             log.info("Saved user: {}", user);
         } else {
-            throw new UserNotSavedException("User is null");
+            throw new InputDataException("User is null");
+        }
+    }
+
+    @Transactional
+    public void update(User user) {
+        if (user != null) {
+            userRepository.save(user);
+            log.info("Update user: {}", user);
+        } else {
+            throw new InputDataException("User is null");
         }
     }
 
@@ -62,18 +74,18 @@ public class UserService {
     }
 
     @Transactional
-    public void addCardById(CardDTO cardDTO, Long id) {
-        User user = userRepository.getReferenceById(id);
-        var card = new BankCard();
-        if (cardDTO.getBalance() != null) {
-            card.setBalance(cardDTO.getBalance());
+    public void addCardById(CardDTO cardDTO, Long user_id) {
+        User user = userRepository.getReferenceById(user_id);
+        if (!cardDTO.someoneValuesIsNull()) {
+            var card = new BankCard();
+            card.setBalance(cardDTO.getBalance() == null ? BigDecimal.ZERO : cardDTO.getBalance());
+            card.setName(cardDTO.getName());
+            user.addCard(card);
+            update(user);
+            log.info("Card {}, with balance {}, added to user {}", card.getName(), card.getBalance(), user);
         } else {
-            card.setBalance(BigDecimal.ZERO);
+            throw new InputDataException("CardDTO have someone null value.");
         }
-        card.setName(cardDTO.getName());
-        user.addCard(card);
-        userRepository.save(user);
-        log.info("Card {}, with balance {}, added to user {}", card.getName(), card.getBalance(), user);
     }
 
 }

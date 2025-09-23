@@ -6,11 +6,18 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Data@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class CardDTO {
 
     private String name;
 
     private BigDecimal balance;
+
+    private Long id;
+
+    public boolean someoneValuesIsNull() {
+        return name == null;
+    }
 }

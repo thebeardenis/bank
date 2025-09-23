@@ -17,4 +17,10 @@ public class UserDTO {
     private String name;
 
     private Long id;
+
+    public boolean someoneValuesIsNull() {
+        if (email == null) return true;
+        if (password == null) return true;
+        return name == null;
+    }
 }
