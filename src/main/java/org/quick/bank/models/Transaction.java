@@ -1,0 +1,51 @@
+package org.quick.bank.models;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jdk.jfr.Enabled;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.apachecommons.CommonsLog;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@Entity
+@Table(name = "transactions")
+@Data
+@AllArgsConstructor
+public class Transaction {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "id_from_user", nullable = false)
+    private Long id_from;
+
+    @Column(name = "id_to_user", nullable = false)
+    private Long id_to;
+
+    @Column(name = "amount", nullable = false)
+    private BigDecimal amount;
+
+    @Column(name = "dealTime", nullable = false)
+    private LocalDateTime dealTime;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "transactions", fetch = FetchType.LAZY)
+    private Set<User> users;
+
+    public Transaction() {
+        this.dealTime = LocalDateTime.now();
+        if (users == null) {
+            users = new HashSet<>();
+        }
+    }
+}

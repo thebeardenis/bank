@@ -3,25 +3,40 @@ package org.quick.bank.services;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.quick.bank.exceptions.BalanceException;
+import org.quick.bank.exceptions.InputDataException;
+import org.quick.bank.models.Transaction;
 import org.quick.bank.repositories.BankCardRepository;
+import org.quick.bank.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Service
 @Slf4j
 public class BankCardService {
 
     private final BankCardRepository bankCardRepository;
+    private final TransactionRepository transactionRepository;
 
-    public BankCardService(BankCardRepository bankCardRepository) {
+    public BankCardService(BankCardRepository bankCardRepository, TransactionRepository transactionRepository) {
         this.bankCardRepository = bankCardRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Transactional
     public void transaction(Long id_from, Long id_to, BigDecimal amount) {
+        if (Objects.equals(id_from, id_to)) {
+            throw new InputDataException("id first user = id second user");
+        }
         addToBalanceById(amount, id_to);
         takeFromBalanceById(amount, id_from);
+        var transaction = new Transaction();
+        transaction.setId_from(id_from);
+        transaction.setId_to(id_to);
+        transaction.setAmount(amount);
+        transactionRepository.save(transaction);
+        log.info("Saving transaction: {}", transaction);
     }
 
     private void addToBalanceById(BigDecimal amount, Long id) {

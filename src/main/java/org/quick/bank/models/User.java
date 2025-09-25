@@ -8,12 +8,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
 @AllArgsConstructor
 public class User{
 
@@ -34,6 +35,20 @@ public class User{
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<BankCard> cards;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "Users_Transactions",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "transaction_id")
+    )
+    private Set<Transaction> transactions;
+
+    public User() {
+        if (transactions == null) {
+            transactions = new HashSet<>();
+        }
+    }
 
     @Override
     public String toString() {
