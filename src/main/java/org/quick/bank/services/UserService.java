@@ -3,16 +3,13 @@ package org.quick.bank.services;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.quick.bank.exceptions.*;
-import org.quick.bank.models.BankCard;
-import org.quick.bank.models.CardDTO;
-import org.quick.bank.models.User;
-import org.quick.bank.models.UserDTO;
+import org.quick.bank.models.*;
 import org.quick.bank.repositories.BankCardRepository;
 import org.quick.bank.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -73,6 +70,14 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<Transaction> getAllTransactionsById(Long id) {
+        List<Transaction> transactions = new ArrayList<>();
+        transactions.addAll(getFromTransactionsById(id));
+        transactions.addAll(getToTransactionsById(id));
+        transactions.sort(Comparator.comparing(Transaction::getDealTime));
+        return transactions;
+    }
+
     @Transactional
     public void addCardById(CardDTO cardDTO, Long user_id) {
         User user = userRepository.getReferenceById(user_id);
@@ -86,6 +91,13 @@ public class UserService {
         } else {
             throw new InputDataException("CardDTO have someone null value.");
         }
+    }
+
+    private List<Transaction> getFromTransactionsById(Long id) {
+        return userRepository.getReferenceById(id).getTransactionsFrom();
+    }
+    private List<Transaction> getToTransactionsById(Long id) {
+        return userRepository.getReferenceById(id).getTransactionsTo();
     }
 
 }

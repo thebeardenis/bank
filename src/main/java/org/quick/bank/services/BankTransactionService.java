@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.quick.bank.exceptions.BalanceException;
 import org.quick.bank.exceptions.InputDataException;
 import org.quick.bank.models.Transaction;
+import org.quick.bank.models.User;
 import org.quick.bank.repositories.BankCardRepository;
 import org.quick.bank.repositories.TransactionRepository;
+import org.quick.bank.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,14 +16,16 @@ import java.util.Objects;
 
 @Service
 @Slf4j
-public class BankCardService {
+public class BankTransactionService {
 
     private final BankCardRepository bankCardRepository;
     private final TransactionRepository transactionRepository;
+    private final UserRepository userRepository;
 
-    public BankCardService(BankCardRepository bankCardRepository, TransactionRepository transactionRepository) {
+    public BankTransactionService(BankCardRepository bankCardRepository, TransactionRepository transactionRepository, UserRepository userRepository) {
         this.bankCardRepository = bankCardRepository;
         this.transactionRepository = transactionRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -32,8 +36,8 @@ public class BankCardService {
         addToBalanceById(amount, id_to);
         takeFromBalanceById(amount, id_from);
         var transaction = new Transaction();
-        transaction.setId_from(id_from);
-        transaction.setId_to(id_to);
+        transaction.setUserFrom(userRepository.getReferenceById(id_from));
+        transaction.setUserTo(userRepository.getReferenceById(id_to));
         transaction.setAmount(amount);
         transactionRepository.save(transaction);
         log.info("Saving transaction: {}", transaction);

@@ -12,10 +12,4 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
-    @Query("SELECT u FROM User u JOIN FETCH u.transactions WHERE u.id = :id")
-    Optional<User> findByIdWithTransactions(@Param("id") Long id);
-
-    @Query("SELECT DISTINCT u FROM User u JOIN u.transactions t WHERE t.id = :transactionId")
-    List<User> findUsersByTransactionId(@Param("transactionId") Long transactionId);
 }

@@ -33,33 +33,27 @@ public class User{
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userCard")
     private List<BankCard> cards;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "Users_Transactions",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "transaction_id")
-    )
-    private Set<Transaction> transactions;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userFrom")
+    private List<Transaction> transactionsFrom;
 
-    public User() {
-        if (transactions == null) {
-            transactions = new HashSet<>();
-        }
-    }
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userTo")
+    private List<Transaction> transactionsTo;
 
     @Override
     public String toString() {
         return "id: " + id + ", email: " + email + ", name: " + name;
     }
 
+    public User() {}
+
     public void addCard(BankCard card) {
         if (cards == null) {
             this.cards = new ArrayList<>();
         }
         cards.add(card);
-        card.setUser(this);
+        card.setUserCard(this);
     }
 }

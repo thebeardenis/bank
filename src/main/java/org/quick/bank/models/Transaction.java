@@ -26,11 +26,15 @@ public class Transaction {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "id_from_user", nullable = false)
-    private Long id_from;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_from_id")
+    private User userFrom;
 
-    @Column(name = "id_to_user", nullable = false)
-    private Long id_to;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_to_id")
+    private User userTo;
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
@@ -38,14 +42,8 @@ public class Transaction {
     @Column(name = "dealTime", nullable = false)
     private LocalDateTime dealTime;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "transactions", fetch = FetchType.LAZY)
-    private Set<User> users;
-
     public Transaction() {
         this.dealTime = LocalDateTime.now();
-        if (users == null) {
-            users = new HashSet<>();
-        }
     }
+
 }

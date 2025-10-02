@@ -1,6 +1,7 @@
 package org.quick.bank.controllers;
 
 import org.quick.bank.models.CardDTO;
+import org.quick.bank.models.Transaction;
 import org.quick.bank.models.User;
 import org.quick.bank.models.UserDTO;
 import org.quick.bank.services.UserService;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class UserController {
@@ -51,5 +53,13 @@ public class UserController {
         return  ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body("Card: " + card.getName() + ", added to user.");
+    }
+
+    @PostMapping("/getTransactions/{id}")
+    public ResponseEntity<List<Transaction>> getTransactionsById(@PathVariable("id") Long id) {
+        List<Transaction> transactions = userService.getAllTransactionsById(id);
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(transactions);
     }
 }

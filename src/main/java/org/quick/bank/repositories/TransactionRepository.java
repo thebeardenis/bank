@@ -12,8 +12,4 @@ import java.util.Optional;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    @Query("SELECT t FROM Transaction t JOIN FETCH t.users WHERE t.id = :id")
-    Optional<Transaction> findByIdWithUsers(@Param("id") Long id);
-
-    List<Transaction> findByUsersId(Long userId);
 }

@@ -30,6 +30,6 @@ public class BankCard {
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userCard;
 
 }
