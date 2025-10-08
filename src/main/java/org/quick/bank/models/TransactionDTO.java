@@ -1,8 +1,11 @@
 package org.quick.bank.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -10,7 +13,15 @@ import java.math.BigDecimal;
 @Setter
 public class TransactionDTO {
 
-    private Long id_from;
-    private Long id_to;
+    private Long id;
+
+    private Long idFrom;
+    private User userFrom;
+
+    private Long idTo;
+    private User userTo;
+
     private BigDecimal amount;
+
+    private LocalDateTime dealTime;
 }

@@ -28,7 +28,6 @@ public class BankTransactionService {
         this.userRepository = userRepository;
     }
 
-    @Transactional
     public void transaction(Long id_from, Long id_to, BigDecimal amount) {
         if (Objects.equals(id_from, id_to)) {
             throw new InputDataException("id first user = id second user");

@@ -1,5 +1,6 @@
-package org.quick.bank.controllers;
+package org.quick.bank.controllers.api;
 
+import jakarta.transaction.Transactional;
 import org.quick.bank.models.CardDTO;
 import org.quick.bank.models.Transaction;
 import org.quick.bank.models.User;
@@ -10,9 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
+@Transactional
 public class UserController {
 
     private final UserService userService;
@@ -22,15 +23,15 @@ public class UserController {
     }
 
 
-    @PostMapping("/create")
-    public ResponseEntity<String> index(@RequestBody UserDTO dto) {
+    @PostMapping("/create_user")
+    public ResponseEntity<String> createUser(@RequestBody UserDTO dto) {
         userService.create(dto);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body("User with name: " + dto.getName() + ", created and saved on DB.");
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/delete_user")
     public ResponseEntity<String> deleteById(@RequestBody UserDTO dto) {
         userService.deleteUserById(dto.getId());
         return ResponseEntity
@@ -38,28 +39,35 @@ public class UserController {
                 .body("User with id: " + dto.getId() + ", deleted.");
     }
 
-    @PostMapping("/getAll")
-    public ResponseEntity<List<User>> getAll() {
-        List<User> users = userService.getAll();
+    @PostMapping("/get_all_users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(users);
-
     }
 
-    @PostMapping("/addBankCard/{id}")
-    public ResponseEntity<String> addBankCard(@PathVariable("id") Long id, @RequestBody CardDTO card) {
-        userService.addCardById(card, id);
+    @PostMapping("/get_user_by_id/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(userService.getUserById(id));
+    }
+
+    @PostMapping("/add_card_to_user_by_id/{id}")
+    public ResponseEntity<String> addCardToUserById(@PathVariable("id") Long user_id, @RequestBody CardDTO dto) {
+        userService.addCardById(dto, user_id);
         return  ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body("Card: " + card.getName() + ", added to user.");
+                .body("Card: " + dto.getName() + ", added to user.");
     }
 
-    @PostMapping("/getTransactions/{id}")
-    public ResponseEntity<List<Transaction>> getTransactionsById(@PathVariable("id") Long id) {
-        List<Transaction> transactions = userService.getAllTransactionsById(id);
+    @PostMapping("/get_transactions_by_user_id/{id}")
+    public ResponseEntity<List<Transaction>> getTransactionsByUserId(@PathVariable("id") Long user_id) {
+        List<Transaction> transactions = userService.getAllTransactionsById(user_id);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body(transactions);
     }
+
 }
