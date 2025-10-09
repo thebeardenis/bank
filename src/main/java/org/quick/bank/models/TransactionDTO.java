@@ -3,6 +3,7 @@ package org.quick.bank.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.quick.bank.models.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,3 +26,4 @@ public class TransactionDTO {
 
     private LocalDateTime dealTime;
 }
+

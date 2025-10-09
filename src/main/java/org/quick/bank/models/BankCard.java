@@ -28,7 +28,7 @@ public class BankCard {
     private String name;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User userCard;
 

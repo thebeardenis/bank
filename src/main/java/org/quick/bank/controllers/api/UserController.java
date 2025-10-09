@@ -53,13 +53,4 @@ public class UserController {
                 .status(HttpStatus.ACCEPTED)
                 .body(userService.getUserById(id));
     }
-
-    @PostMapping("/get_transactions_by_user_id/{id}")
-    public ResponseEntity<List<Transaction>> getTransactionsByUserId(@PathVariable("id") Long user_id) {
-        List<Transaction> transactions = userService.getAllTransactionsById(user_id);
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(transactions);
-    }
-
 }

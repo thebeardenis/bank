@@ -67,20 +67,4 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<Transaction> getAllTransactionsById(Long id) {
-        List<Transaction> transactions = new ArrayList<>();
-        transactions.addAll(getFromTransactionsById(id));
-        transactions.addAll(getToTransactionsById(id));
-        transactions.sort(Comparator.comparing(Transaction::getDealTime));
-        return transactions;
-    }
-
-    private List<Transaction> getFromTransactionsById(Long id) {
-        return userRepository.getReferenceById(id).getTransactionsFrom();
-    }
-
-    private List<Transaction> getToTransactionsById(Long id) {
-        return userRepository.getReferenceById(id).getTransactionsTo();
-    }
-
 }

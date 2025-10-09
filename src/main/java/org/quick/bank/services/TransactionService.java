@@ -10,6 +10,9 @@ import org.quick.bank.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -34,8 +37,8 @@ public class TransactionService {
         addToBalanceById(amount, id_to);
         takeFromBalanceById(amount, id_from);
         var transaction = new Transaction();
-        transaction.setUserFrom(userRepository.getReferenceById(id_from));
-        transaction.setUserTo(userRepository.getReferenceById(id_to));
+        transaction.setUserFrom(bankCardRepository.getReferenceById(id_from).getUserCard());
+        transaction.setUserTo(bankCardRepository.getReferenceById(id_to).getUserCard());
         transaction.setAmount(amount);
         transactionRepository.save(transaction);
         log.info("Saving transaction: {}", transaction);
@@ -57,6 +60,22 @@ public class TransactionService {
         } else {
             throw new BalanceException("Balance on card: " + card + ", less as request in operation.");
         }
+    }
+
+    public List<Transaction> getTransactionsByUserId(Long id) {
+        List<Transaction> transactions = new ArrayList<>();
+        transactions.addAll(getFromTransactionsById(id));
+        transactions.addAll(getToTransactionsById(id));
+        transactions.sort(Comparator.comparing(Transaction::getDealTime));
+        return transactions;
+    }
+
+    private List<Transaction> getFromTransactionsById(Long id) {
+        return userRepository.getReferenceById(id).getTransactionsFrom();
+    }
+
+    private List<Transaction> getToTransactionsById(Long id) {
+        return userRepository.getReferenceById(id).getTransactionsTo();
     }
 
 }
