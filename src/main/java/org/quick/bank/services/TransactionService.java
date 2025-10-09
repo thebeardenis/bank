@@ -1,11 +1,9 @@
 package org.quick.bank.services;
 
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.quick.bank.exceptions.BalanceException;
 import org.quick.bank.exceptions.InputDataException;
 import org.quick.bank.models.Transaction;
-import org.quick.bank.models.User;
 import org.quick.bank.repositories.BankCardRepository;
 import org.quick.bank.repositories.TransactionRepository;
 import org.quick.bank.repositories.UserRepository;
@@ -16,17 +14,18 @@ import java.util.Objects;
 
 @Service
 @Slf4j
-public class BankTransactionService {
+public class TransactionService {
 
     private final BankCardRepository bankCardRepository;
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
 
-    public BankTransactionService(BankCardRepository bankCardRepository, TransactionRepository transactionRepository, UserRepository userRepository) {
+    public TransactionService(BankCardRepository bankCardRepository, TransactionRepository transactionRepository, UserRepository userRepository) {
         this.bankCardRepository = bankCardRepository;
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
     }
+
 
     public void transaction(Long id_from, Long id_to, BigDecimal amount) {
         if (Objects.equals(id_from, id_to)) {

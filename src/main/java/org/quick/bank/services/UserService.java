@@ -67,20 +67,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void addCardById(CardDTO cardDTO, Long user_id) {
-        if (!cardDTO.necessaryFieldIsNull()) {
-            User user = userRepository.getReferenceById(user_id);
-            var card = new BankCard();
-            card.setBalance(cardDTO.getBalance() == null ? BigDecimal.ZERO : cardDTO.getBalance());
-            card.setName(cardDTO.getName());
-            user.addCard(card);
-            save(user);
-            log.info("Card {}, with balance {}, added to user {}", card.getName(), card.getBalance(), user);
-        } else {
-            throw new InputDataException("Someone necessary field in cardDTO is null.");
-        }
-    }
-
     public List<Transaction> getAllTransactionsById(Long id) {
         List<Transaction> transactions = new ArrayList<>();
         transactions.addAll(getFromTransactionsById(id));

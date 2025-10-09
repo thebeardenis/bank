@@ -19,6 +19,7 @@ public class CardDTO {
 
     private String name;
 
+    private Long userId;
     private User userCard;
 
     public boolean necessaryFieldIsNull() {

@@ -54,14 +54,6 @@ public class UserController {
                 .body(userService.getUserById(id));
     }
 
-    @PostMapping("/add_card_to_user_by_id/{id}")
-    public ResponseEntity<String> addCardToUserById(@PathVariable("id") Long user_id, @RequestBody CardDTO dto) {
-        userService.addCardById(dto, user_id);
-        return  ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body("Card: " + dto.getName() + ", added to user.");
-    }
-
     @PostMapping("/get_transactions_by_user_id/{id}")
     public ResponseEntity<List<Transaction>> getTransactionsByUserId(@PathVariable("id") Long user_id) {
         List<Transaction> transactions = userService.getAllTransactionsById(user_id);
