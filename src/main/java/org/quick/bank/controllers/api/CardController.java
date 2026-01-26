@@ -1,18 +1,19 @@
 package org.quick.bank.controllers.api;
 
+import jakarta.transaction.Transactional;
 import org.quick.bank.models.BankCard;
 import org.quick.bank.models.CardDTO;
 import org.quick.bank.services.CardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/api/card")
+@Transactional
 public class CardController {
 
     private final CardService cardService;
