@@ -2,6 +2,7 @@ package org.quick.bank.controllers.pages;
 
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,9 @@ public class PagesController {
         return "index";
     }
 
-    @GetMapping("/view_cards/{email}")
-    public String viewCards(@PathVariable("email") String email) {
-        
+    @GetMapping("/view_cards/{id}")
+    public String viewCards(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user_id", id);
         return "cards";
     }
 

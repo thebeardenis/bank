@@ -20,10 +20,10 @@ function loadData() {
         for (var i=0; i<data.length; i++) {
             var user = data[i];
             container.innerHTML += `
-                <div>
+                <div style="border: 2px solid #000; background-color: rgba(255, 255, 255, 0.5); padding: 20px;">
                 <p><strong>Name:</strong> ${user.name}</p>
                 <p><strong>Email:</strong> ${user.email}</p>
-                <a href="http://localhost:8080/view_cards/${user.email}">View user cards</a>
+                <a href="http://localhost:8080/view_cards/${user.id}">View user cards</a>
                 </div>
             `
         }
@@ -31,6 +31,42 @@ function loadData() {
     .catch(error => {
         console.error('Ошибка:', error);
         document.getElementById('all-users-data').innerHTML =
+            `<p style="color: red;">Ошибка при загрузке данных: ${error.message}</p>`;
+    });
+}
+
+function loadDataCards(id) {
+    fetch('/api/card/get_user_cards_by_id/' + id, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            client: 'browser',
+            timestamp: new Date().toISOString()
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Ошибка HTTP: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const container = document.getElementById('all-cards-data');
+        for (var i=0; i<data.length; i++) {
+            var card = data[i];
+            container.innerHTML += `
+                <div style="border: 2px solid #000; background-color: rgba(255, 255, 255, 0.5); padding: 20px;">
+                <p><strong>Name:</strong> ${card.name}</p>
+                <p><strong>Balance:</strong> ${card.balance}</p>
+                </div>
+            `
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        document.getElementById('all-cards-data').innerHTML =
             `<p style="color: red;">Ошибка при загрузке данных: ${error.message}</p>`;
     });
 }
