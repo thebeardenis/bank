@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
+// TODO: rename variables, functions, classes
 @SpringBootApplication
 @EnableJpaRepositories("org.quick.bank.repositories")
 public class BankApplication {
