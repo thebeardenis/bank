@@ -28,7 +28,7 @@ public class CardService {
 
 
     public void addCardById(Long id, CardDTO dto) {
-        if (!dto.necessaryFieldIsNull()) {
+        if (dto.getName() != null) {
             User user = userRepository.getReferenceById(id);
             var card = new BankCard();
             card.setBalance(dto.getBalance() == null ? BigDecimal.ZERO : dto.getBalance());

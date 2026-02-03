@@ -1,6 +1,7 @@
 package org.quick.bank.controllers.api;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.quick.bank.models.Transaction;
 import org.quick.bank.models.TransactionDTO;
 import org.quick.bank.services.TransactionService;
@@ -22,8 +23,8 @@ public class TransactionController {
     }
 
 
-    @PostMapping("/transaction")
-    public ResponseEntity<String> transaction(@RequestBody TransactionDTO dto) {
+    @PostMapping("/go_transaction")
+    public ResponseEntity<String> transaction(@ModelAttribute TransactionDTO dto) {
         transactionService.transaction(dto.getIdFrom(), dto.getIdTo(), dto.getAmount());
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)

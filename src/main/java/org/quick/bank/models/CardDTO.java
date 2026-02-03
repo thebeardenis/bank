@@ -20,13 +20,6 @@ public class CardDTO {
     private String name;
 
     private Long userId;
-    private User userCard;
+    private User user;
 
-    public boolean necessaryFieldIsNull() {
-        return name == null;
-    }
-    public boolean notNecessaryFieldsIsNotNull() {
-        if (balance != null) return true;
-        return userCard != null;
-    }
 }

@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 @Setter
 public class TransactionDTO {
 
-    private Long id;
-
     private Long idFrom;
     private User userFrom;
 

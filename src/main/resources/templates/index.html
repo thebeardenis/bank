@@ -9,16 +9,42 @@
 <body>
 
 <div>
+    <h2>Transaction menu</h2>
+    <div>
+        <form id="myForm">>
+            <div>
+                <label for="idFrom">From card id:</label>
+                <input type="text" id="idFrom" name="idFrom" required>
+            </div>
+            <div>
+                <label for="idTo">To card id:</label>
+                <input type="text" id="idTo" name="idTo" required>
+            </div>
+            <div>
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" step="0.01" required>
+            </div>
+            <button type="submit">Transaction</button>
+        </form>
+    </div>
+
     <h2>Users:</h2>
     <div id="all-users-data"></div>
 </div>
 
-<script src="/static/js/defs.js"></script>
+<script src="/static/js/loadFunctions.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        loadData();
+        loadDataOfAllUsers();
     });
+    document.getElementById('myForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let idFrom = this.idFrom.value;
+        let idTo = this.idTo.value;
+        let amount = this.amount.value;
+        transaction(idFrom, idTo, amount);
+  });
 </script>
 
 </body>
