@@ -40,7 +40,7 @@ public class CardController {
     }
 
     @PostMapping("/get_user_card_by_id/{id}")
-    public ResponseEntity<BankCard> getCardById(Long id) {
+    public ResponseEntity<BankCard> getCardById(@PathVariable("id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body(cardService.getCardById(id));

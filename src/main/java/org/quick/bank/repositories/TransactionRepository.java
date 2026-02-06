@@ -12,4 +12,7 @@ import java.util.Optional;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
+    @Query(value = "SELECT * FROM transactions ORDER BY dealTime DESC LIMIT :count",
+            nativeQuery = true)
+    List<Transaction> getLastTransactions(@Param("count") Long count);
 }

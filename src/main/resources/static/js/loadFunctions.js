@@ -6,16 +6,16 @@ function transaction(idFrom, idTo, amount) {
 
     fetch('/api/transaction/go_transaction', {
         method: 'POST',
-        headers: {},
         body: formData
     })
     .then(response => {
         if (!response.ok) {
             throw new Error('Ошибка HTTP: ' + response.status);
         }
-        return response.text();
+        return response.json();
     })
     .then(data => {
+        const transactionId = data.transactionId;
         document.getElementById('myForm').innerHTML = `
                     <div>
                         <label for="idFrom">From card id:</label>
@@ -48,7 +48,7 @@ function transaction(idFrom, idTo, amount) {
                 <label for="amount">Amount:</label>
                 <input type="number" id="amount" name="amount" step="0.01" required>
             </div>
-            <p style="color: red;">Ошибка при загрузке данных: ${error.message}</p>
+            <p style="color: red;">Error at load data from server: ${error.message}</p>
             <button type="submit">Transaction</button>
         `;
     });
@@ -86,6 +86,41 @@ function loadDataOfAllUsers() {
     .catch(error => {
         console.error('Ошибка:', error);
         document.getElementById('all-users-data').innerHTML =
+            `<p style="color: red;">Ошибка при загрузке данных: ${error.message}</p>`;
+    });
+}
+function loadDataOfAllTransactions(count) {
+    fetch('/api/transaction/get_last_transactions/' + count, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            client: 'browser',
+            timestamp: new Date().toISOString()
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Ошибка HTTP: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+            const container = document.getElementById('all-transactions-data');
+            for (var i=0; i<data.length; i++) {
+                var transaction = data[i];
+                container.innerHTML += `
+                    <div style="border: 2px solid #000; background-color: rgba(255, 255, 255, 0.5); padding: 2px;">
+                    <p style="margin: 3px;"><strong>Data:</strong> ${transaction.dealTime}</p>
+                    <p style="margin: 3px;"><strong>Amount:</strong> ${transaction.amount}</p>
+                    </div>
+                `
+            }
+        })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        document.getElementById('all-transactions-data').innerHTML =
             `<p style="color: red;">Ошибка при загрузке данных: ${error.message}</p>`;
     });
 }

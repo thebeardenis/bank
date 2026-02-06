@@ -8,28 +8,35 @@
 
 <body>
 
-<div>
-    <h2>Transaction menu</h2>
-    <div>
-        <form id="myForm">>
-            <div>
-                <label for="idFrom">From card id:</label>
-                <input type="text" id="idFrom" name="idFrom" required>
-            </div>
-            <div>
-                <label for="idTo">To card id:</label>
-                <input type="text" id="idTo" name="idTo" required>
-            </div>
-            <div>
-                <label for="amount">Amount:</label>
-                <input type="number" id="amount" name="amount" step="0.01" required>
-            </div>
-            <button type="submit">Transaction</button>
-        </form>
+<div style="display: flex; width: 100%; height: 100vh;">
+    <div style="width: 50%; box-sizing: border-box; padding: 20px;">
+        <h2>Transaction menu</h2>
+        <div>
+            <form id="myForm">>
+                <div>
+                    <label for="idFrom">From card id:</label>
+                    <input type="text" id="idFrom" name="idFrom" required>
+                </div>
+                <div>
+                    <label for="idTo">To card id:</label>
+                    <input type="text" id="idTo" name="idTo" required>
+                </div>
+                <div>
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" name="amount" step="0.01" required>
+                </div>
+                <button type="submit">Transaction</button>
+            </form>
+        </div>
+
+        <h2>Users:</h2>
+        <div id="all-users-data"></div>
     </div>
 
-    <h2>Users:</h2>
-    <div id="all-users-data"></div>
+    <div style="width: 50%; box-sizing: border-box; padding: 20px;">
+        <h2>History of transactions</h2>
+        <div id="all-transactions-data"></div>
+    </div>
 </div>
 
 <script src="/static/js/loadFunctions.js"></script>
@@ -37,6 +44,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         loadDataOfAllUsers();
+        loadDataOfAllTransactions(10);
     });
     document.getElementById('myForm').addEventListener('submit', function(event) {
         event.preventDefault();

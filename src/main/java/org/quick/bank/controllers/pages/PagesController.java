@@ -22,5 +22,4 @@ public class PagesController {
         model.addAttribute("user_id", id);
         return "cards";
     }
-
 }

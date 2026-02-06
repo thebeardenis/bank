@@ -30,7 +30,7 @@ public class TransactionService {
     }
 
 
-    public void transaction(Long id_from, Long id_to, BigDecimal amount) {
+    public Long transaction(Long id_from, Long id_to, BigDecimal amount) {
         if (Objects.equals(id_from, id_to)) {
             throw new InputDataException("id first user = id second user");
         }
@@ -42,6 +42,7 @@ public class TransactionService {
         transaction.setAmount(amount);
         transactionRepository.save(transaction);
         log.info("Saving transaction: {}", transaction);
+        return transaction.getId();
     }
 
     private void addToBalanceById(BigDecimal amount, Long id) {
@@ -70,12 +71,20 @@ public class TransactionService {
         return transactions;
     }
 
+    public Transaction getTransactionById(Long id) {
+        return transactionRepository.getReferenceById(id);
+    }
+
     private List<Transaction> getFromTransactionsById(Long id) {
         return userRepository.getReferenceById(id).getTransactionsFrom();
     }
 
     private List<Transaction> getToTransactionsById(Long id) {
         return userRepository.getReferenceById(id).getTransactionsTo();
+    }
+
+    public List<Transaction> getLastTransactions(Long count) {
+        return transactionRepository.getLastTransactions(count);
     }
 
 }
