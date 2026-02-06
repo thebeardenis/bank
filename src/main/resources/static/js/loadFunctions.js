@@ -78,7 +78,8 @@ function loadDataOfAllUsers() {
                 <div style="border: 2px solid #000; background-color: rgba(255, 255, 255, 0.5); padding: 5px;">
                 <p><strong>Name:</strong> ${user.name}</p>
                 <p><strong>Email:</strong> ${user.email}</p>
-                <a href="http://localhost:8080/view_cards/${user.id}">View user cards</a>
+                <a href="http://localhost:8080/view_cards/${user.id}">View user cards</a><br>
+                <a href="http://localhost:8080/view_transactions/${user.id}">View user transactions</a>
                 </div>
             `
         }
@@ -157,6 +158,41 @@ function loadDataCardsByUserId(id) {
     .catch(error => {
         console.error('Ошибка:', error);
         document.getElementById('all-cards-data').innerHTML =
+            `<p style="color: red;">Ошибка при загрузке данных: ${error.message}</p>`;
+    });
+}
+function loadDataTransactionsByUserId(id) {
+    fetch('/api/transaction/get_transactions_by_user_id/' + id, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            client: 'browser',
+            timestamp: new Date().toISOString()
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Ошибка HTTP: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const container = document.getElementById('all-user-transactions-data');
+        for (var i=0; i<data.length; i++) {
+            var transaction = data[i];
+            container.innerHTML += `
+                <div style="border: 2px solid #000; background-color: rgba(255, 255, 255, 0.5); padding: 2px;">
+                <p style="margin: 3px;"><strong>Data:</strong> ${transaction.dealTime}</p>
+                <p style="margin: 3px;"><strong>Amount:</strong> ${transaction.amount}</p>
+                </div>
+            `
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        document.getElementById('all-user-transactions-data').innerHTML =
             `<p style="color: red;">Ошибка при загрузке данных: ${error.message}</p>`;
     });
 }

@@ -22,4 +22,10 @@ public class PagesController {
         model.addAttribute("user_id", id);
         return "cards";
     }
+
+    @GetMapping("/view_transactions/{id}")
+    public String viewTransactions(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user_id", id);
+        return "transactions";
+    }
 }
