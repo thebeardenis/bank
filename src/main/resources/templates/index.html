@@ -9,31 +9,35 @@
 <body>
 
 <div style="display: flex; width: 100%; height: 100vh;">
-    <div style="width: 50%; box-sizing: border-box; padding: 20px;">
-        <h2>Transaction menu</h2>
-        <div>
-            <form id="myForm">>
-                <div>
-                    <label for="idFrom">From card id:</label>
-                    <input type="text" id="idFrom" name="idFrom" required>
-                </div>
-                <div>
-                    <label for="idTo">To card id:</label>
-                    <input type="text" id="idTo" name="idTo" required>
-                </div>
-                <div>
-                    <label for="amount">Amount:</label>
-                    <input type="number" id="amount" name="amount" step="0.01" required>
-                </div>
-                <button type="submit">Transaction</button>
-            </form>
+    <div style="width: 80%; box-sizing: border-box; padding: 10px; margin: 5px;">
+        <div style="border: 2px solid #000; margin: 5px; padding: 5px;">
+            <h2>Transaction menu</h2>
+            <div>
+                <form id="myForm">>
+                    <div>
+                        <label for="idFrom">From card id:</label>
+                        <input type="text" id="idFrom" name="idFrom" required>
+                    </div>
+                    <div>
+                        <label for="idTo">To card id:</label>
+                        <input type="text" id="idTo" name="idTo" required>
+                    </div>
+                    <div>
+                        <label for="amount">Amount:</label>
+                        <input type="number" id="amount" name="amount" step="0.01" required>
+                    </div>
+                    <button type="submit">Transaction</button>
+                </form>
+            </div>
         </div>
 
-        <h2>Users:</h2>
-        <div id="all-users-data"></div>
+        <div style="border: 2px solid #000; margin: 5px; padding: 5px;">
+            <h2>Users:</h2>
+            <div id="all-users-data"></div>
+        </div>
     </div>
 
-    <div style="width: 50%; box-sizing: border-box; padding: 20px;">
+    <div style="width: 20%; box-sizing: border-box; padding: 10px; margin: 5px;">
         <h2>Last transactions</h2>
         <div id="all-transactions-data"></div>
     </div>

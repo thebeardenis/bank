@@ -48,7 +48,7 @@ function transaction(idFrom, idTo, amount) {
                 <label for="amount">Amount:</label>
                 <input type="number" id="amount" name="amount" step="0.01" required>
             </div>
-            <p style="color: red;">Error at load data from server: ${error.message}</p>
+            <p style="color: red;">Error: ${error.message}</p>
             <button type="submit">Transaction</button>
         `;
     });
@@ -75,9 +75,9 @@ function loadDataOfAllUsers() {
         for (var i=0; i<data.length; i++) {
             var user = data[i];
             container.innerHTML += `
-                <div style="border: 2px solid #000; background-color: rgba(255, 255, 255, 0.5); padding: 5px;">
-                <p><strong>Name:</strong> ${user.name}</p>
-                <p><strong>Email:</strong> ${user.email}</p>
+                <div style="border: 2px solid #000; background-color: rgba(255, 255, 255, 0.5); padding: 5px; margin: 5px;">
+                <p  style="margin: 3px;"><strong>Name:</strong> ${user.name}</p>
+                <p  style="margin: 3px;"><strong>Email:</strong> ${user.email}</p>
                 <a href="http://localhost:8080/view_cards/${user.id}">View user cards</a><br>
                 <a href="http://localhost:8080/view_transactions/${user.id}">View user transactions</a>
                 </div>
@@ -87,7 +87,7 @@ function loadDataOfAllUsers() {
     .catch(error => {
         console.error('Ошибка:', error);
         document.getElementById('all-users-data').innerHTML =
-            `<p style="color: red;">Ошибка при загрузке данных: ${error.message}</p>`;
+            `<p style="color: red;">Error: ${error.message}</p>`;
     });
 }
 function loadDataOfAllTransactions(count) {
@@ -112,7 +112,7 @@ function loadDataOfAllTransactions(count) {
             for (var i=0; i<data.length; i++) {
                 var transaction = data[i];
                 container.innerHTML += `
-                    <div style="border: 2px solid #000; background-color: rgba(255, 255, 255, 0.5); padding: 2px;">
+                    <div style="border: 2px solid #000; background-color: rgba(255, 255, 255, 0.5); padding: 2px; margin: 2px;">
                     <p style="margin: 3px;"><strong>Data:</strong> ${transaction.dealTime}</p>
                     <p style="margin: 3px;"><strong>Amount:</strong> ${transaction.amount}</p>
                     </div>
@@ -122,7 +122,7 @@ function loadDataOfAllTransactions(count) {
     .catch(error => {
         console.error('Ошибка:', error);
         document.getElementById('all-transactions-data').innerHTML =
-            `<p style="color: red;">Ошибка при загрузке данных: ${error.message}</p>`;
+            `<p style="color: red;">Error: ${error.message}</p>`;
     });
 }
 
@@ -158,7 +158,7 @@ function loadDataCardsByUserId(id) {
     .catch(error => {
         console.error('Ошибка:', error);
         document.getElementById('all-cards-data').innerHTML =
-            `<p style="color: red;">Ошибка при загрузке данных: ${error.message}</p>`;
+            `<p style="color: red;">Error: ${error.message}</p>`;
     });
 }
 function loadDataTransactionsByUserId(id) {
@@ -183,7 +183,7 @@ function loadDataTransactionsByUserId(id) {
         for (var i=0; i<data.length; i++) {
             var transaction = data[i];
             container.innerHTML += `
-                <div style="border: 2px solid #000; background-color: rgba(255, 255, 255, 0.5); padding: 2px;">
+                <div style="border: 2px solid #000; background-color: rgba(255, 255, 255, 0.5); padding: 2px; margin: 2px;">
                 <p style="margin: 3px;"><strong>Data:</strong> ${transaction.dealTime}</p>
                 <p style="margin: 3px;"><strong>Amount:</strong> ${transaction.amount}</p>
                 </div>
@@ -193,6 +193,6 @@ function loadDataTransactionsByUserId(id) {
     .catch(error => {
         console.error('Ошибка:', error);
         document.getElementById('all-user-transactions-data').innerHTML =
-            `<p style="color: red;">Ошибка при загрузке данных: ${error.message}</p>`;
+            `<p style="color: red;">Error: ${error.message}</p>`;
     });
 }
