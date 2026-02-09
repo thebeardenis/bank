@@ -1,6 +1,7 @@
 package org.quick.bank.models;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jdk.jfr.Enabled;
@@ -39,6 +40,7 @@ public class Transaction {
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "dealTime", nullable = false)
     private LocalDateTime dealTime;
 
