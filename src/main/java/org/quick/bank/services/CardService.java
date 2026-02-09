@@ -3,15 +3,13 @@ package org.quick.bank.services;
 import lombok.extern.slf4j.Slf4j;
 import org.quick.bank.exceptions.InputDataException;
 import org.quick.bank.models.BankCard;
-import org.quick.bank.models.CardDTO;
+import org.quick.bank.models.DTOs.CardDTO;
 import org.quick.bank.models.User;
 import org.quick.bank.repositories.BankCardRepository;
 import org.quick.bank.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
-import javax.smartcardio.Card;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

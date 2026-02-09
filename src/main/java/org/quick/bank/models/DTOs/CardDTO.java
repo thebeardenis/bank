@@ -1,10 +1,9 @@
-package org.quick.bank.models;
+package org.quick.bank.models.DTOs;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.quick.bank.models.User;
 
 import java.math.BigDecimal;
 

@@ -2,7 +2,7 @@ package org.quick.bank.controllers.api;
 
 import jakarta.transaction.Transactional;
 import org.quick.bank.models.Transaction;
-import org.quick.bank.models.TransactionDTO;
+import org.quick.bank.models.DTOs.TransactionDTO;
 import org.quick.bank.services.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/transaction")

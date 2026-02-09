@@ -1,7 +1,5 @@
-package org.quick.bank.models;
+package org.quick.bank.models.DTOs;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.*;
 import org.quick.bank.models.User;
 

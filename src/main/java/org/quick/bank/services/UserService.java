@@ -3,10 +3,10 @@ package org.quick.bank.services;
 import lombok.extern.slf4j.Slf4j;
 import org.quick.bank.exceptions.*;
 import org.quick.bank.models.*;
+import org.quick.bank.models.DTOs.UserDTO;
 import org.quick.bank.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Service

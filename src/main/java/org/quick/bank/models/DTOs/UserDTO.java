@@ -1,12 +1,11 @@
-package org.quick.bank.models;
+package org.quick.bank.models.DTOs;
 
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.quick.bank.models.BankCard;
+import org.quick.bank.models.Transaction;
 
 import java.util.List;
 

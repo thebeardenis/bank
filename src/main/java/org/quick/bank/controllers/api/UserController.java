@@ -1,10 +1,8 @@
 package org.quick.bank.controllers.api;
 
 import jakarta.transaction.Transactional;
-import org.quick.bank.models.CardDTO;
-import org.quick.bank.models.Transaction;
 import org.quick.bank.models.User;
-import org.quick.bank.models.UserDTO;
+import org.quick.bank.models.DTOs.UserDTO;
 import org.quick.bank.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
