@@ -1,4 +1,4 @@
-package org.quick.bank.models;
+package org.quick.bank.entity.models;
 
 
 import jakarta.persistence.*;
@@ -7,15 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
+@NoArgsConstructor
 public class User{
 
     @Id
@@ -47,13 +45,7 @@ public class User{
         return "id: " + id + ", email: " + email + ", name: " + name;
     }
 
-    public User() {}
-
     public void addCard(BankCard card) {
-        if (cards == null) {
-            this.cards = new ArrayList<>();
-        }
         cards.add(card);
-        card.setUserCard(this);
     }
 }

@@ -1,4 +1,4 @@
-package org.quick.bank.models;
+package org.quick.bank.entity.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

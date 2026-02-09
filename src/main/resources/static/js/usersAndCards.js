@@ -38,7 +38,7 @@ function loadDataOfAllUsers() {
 
 
 function loadDataCardsByUserId(id) {
-    fetch('/api/card/get_user_cards_by_id/' + id, {
+    fetch('/api/card/get_cards_by_user_id/' + id, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

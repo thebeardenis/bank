@@ -3,7 +3,7 @@ package org.quick.bank.services;
 import lombok.extern.slf4j.Slf4j;
 import org.quick.bank.exceptions.BalanceException;
 import org.quick.bank.exceptions.InputDataException;
-import org.quick.bank.models.Transaction;
+import org.quick.bank.entity.models.Transaction;
 import org.quick.bank.repositories.BankCardRepository;
 import org.quick.bank.repositories.TransactionRepository;
 import org.quick.bank.repositories.UserRepository;
@@ -30,7 +30,7 @@ public class TransactionService {
     }
 
 
-    public Long transaction(Long id_from, Long id_to, BigDecimal amount) {
+    public Transaction transaction(Long id_from, Long id_to, BigDecimal amount) {
         if (Objects.equals(id_from, id_to)) {
             throw new InputDataException("id first user = id second user");
         }
@@ -42,7 +42,7 @@ public class TransactionService {
         transaction.setAmount(amount);
         transactionRepository.save(transaction);
         log.info("Saving transaction: {}", transaction);
-        return transaction.getId();
+        return transaction;
     }
 
     private void addToBalanceById(BigDecimal amount, Long id) {

@@ -1,9 +1,9 @@
 package org.quick.bank.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.quick.bank.entity.models.User;
 import org.quick.bank.exceptions.*;
-import org.quick.bank.models.*;
-import org.quick.bank.models.DTOs.UserDTO;
+import org.quick.bank.entity.requests.CreateUserRequest;
 import org.quick.bank.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,38 +20,17 @@ public class UserService {
     }
 
 
-    public void create(UserDTO dto) {
-        if (dto.getId() == null) {
-            if (dto.necessaryFieldIsNull()) {
-                throw new InputDataException("Necessary values of UserDTO is null.");
-            } else {
-                var user = new User();
-                user.setPassword(dto.getPassword());
-                user.setEmail(dto.getEmail());
-                user.setName(dto.getName());
-                if (dto.notNecessaryFieldsIsNotNull()) {
-                    if (dto.getCards() != null) {
-                        user.setCards(dto.getCards());
-                    }
-                    if (dto.getTransactionsFrom() != null) {
-                        user.setTransactionsFrom(dto.getTransactionsFrom());
-                    }
-                    if (dto.getTransactionsTo() != null) {
-                        user.setTransactionsTo(dto.getTransactionsTo());
-                    }
-                }
-                log.info("Create user: {}", user);
-                save(user);
-            }
+    public User create(CreateUserRequest request) {
+        User user = new User();
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new UserEmailAlreadyUse("email already use");
         } else {
-            throw new UserAlreadyExistException("User with id :" + dto.getId() + ", Already existed");
+            user.setName(request.getName());
+            user.setEmail(request.getEmail());
+            user.setPassword(request.getPassword());
+            userRepository.save(user);
         }
-    }
-
-    public void save(User user) {
-        userRepository.save(user);
-        log.info("Saved user: {}", user);
-
+        return user;
     }
 
     public void deleteUserById(Long id) {

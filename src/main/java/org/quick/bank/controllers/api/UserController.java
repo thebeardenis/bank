@@ -1,8 +1,9 @@
 package org.quick.bank.controllers.api;
 
 import jakarta.transaction.Transactional;
-import org.quick.bank.models.User;
-import org.quick.bank.models.DTOs.UserDTO;
+import jakarta.validation.Valid;
+import org.quick.bank.entity.models.User;
+import org.quick.bank.entity.requests.CreateUserRequest;
 import org.quick.bank.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +24,26 @@ public class UserController {
 
 
     @PostMapping("/create_user")
-    public ResponseEntity<String> createUser(@RequestBody UserDTO dto) {
-        userService.create(dto);
+    public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserRequest request) {
+        User user = userService.create(request);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("User with name: " + dto.getName() + ", created and saved on DB.");
+                .body(user);
     }
 
-    @PostMapping("/delete_user")
-    public ResponseEntity<String> deleteById(@RequestBody UserDTO dto) {
-        userService.deleteUserById(dto.getId());
+    @PostMapping("/delete_user_by_id/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
+        userService.deleteUserById(id);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body("User with id: " + dto.getId() + ", deleted.");
+                .body("Success.");
+    }
+
+    @PostMapping("/get_user_by_id/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(userService.getUserById(id));
     }
 
     @PostMapping("/get_all_users")
@@ -44,12 +52,5 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(users);
-    }
-
-    @PostMapping("/get_user_by_id/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(userService.getUserById(id));
     }
 }

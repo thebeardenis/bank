@@ -1,8 +1,8 @@
 package org.quick.bank.controllers.api;
 
 import jakarta.transaction.Transactional;
-import org.quick.bank.models.Transaction;
-import org.quick.bank.models.DTOs.TransactionDTO;
+import org.quick.bank.entity.models.Transaction;
+import org.quick.bank.entity.requests.TransactionRequest;
 import org.quick.bank.services.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +25,11 @@ public class TransactionController {
 
 
     @PostMapping("/go_transaction")
-    public ResponseEntity<Map<String, Object>> transaction(@ModelAttribute TransactionDTO dto) {
-        Long transactionId = transactionService.transaction(dto.getIdFrom(), dto.getIdTo(), dto.getAmount());
+    public ResponseEntity<Map<String, Object>> transaction(@ModelAttribute TransactionRequest request) {
+        Transaction transaction = transactionService.transaction(request.getUserIdFrom(), request.getUserIdTo(), request.getAmount());
         Map<String, Object> result = new HashMap<>();
         result.put("message", "Card balance changed successfully.");
-        result.put("transactionId", transactionId);
+        result.put("transaction", transaction);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(result);

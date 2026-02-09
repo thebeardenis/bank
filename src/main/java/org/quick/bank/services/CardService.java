@@ -1,10 +1,8 @@
 package org.quick.bank.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.quick.bank.exceptions.InputDataException;
-import org.quick.bank.models.BankCard;
-import org.quick.bank.models.DTOs.CardDTO;
-import org.quick.bank.models.User;
+import org.quick.bank.entity.models.BankCard;
+import org.quick.bank.entity.models.User;
 import org.quick.bank.repositories.BankCardRepository;
 import org.quick.bank.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -25,27 +23,21 @@ public class CardService {
     }
 
 
-    public void addCardById(Long id, CardDTO dto) {
-        if (dto.getName() != null) {
-            User user = userRepository.getReferenceById(id);
-            var card = new BankCard();
-            card.setBalance(dto.getBalance() == null ? BigDecimal.ZERO : dto.getBalance());
-            card.setName(dto.getName());
-            card.setUserCard(user);
-            cardRepository.save(card);
-            userRepository.save(user);
-            log.info("Card {}, with balance {}, added to user {}", card.getName(), card.getBalance(), user);
-        } else {
-            throw new InputDataException("Someone necessary field in cardDTO is null.");
-        }
+    public BankCard addCardById(Long id, String name) {
+        User user = userRepository.getReferenceById(id);
+        var card = new BankCard();
+        card.setUserCard(user);
+        card.setBalance(BigDecimal.ZERO);
+        card.setName(name);
+        card.setUserCard(user);
+        user.addCard(card);
+        cardRepository.save(card);
+        userRepository.save(user);
+        return card;
     }
 
-    public void deleteCardById(CardDTO dto) {
-        if (dto.getId() != null) {
-            cardRepository.deleteById(dto.getId());
-        } else {
-            throw new InputDataException("card id is null");
-        }
+    public void deleteCardById(Long id) {
+        cardRepository.deleteById(id);
     }
 
     public BankCard getCardById(Long id) {

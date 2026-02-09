@@ -1,8 +1,8 @@
 package org.quick.bank.controllers.api;
 
 import jakarta.transaction.Transactional;
-import org.quick.bank.models.BankCard;
-import org.quick.bank.models.DTOs.CardDTO;
+import org.quick.bank.entity.models.BankCard;
+import org.quick.bank.entity.requests.CreateBankCardRequest;
 import org.quick.bank.services.CardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,30 +22,30 @@ public class CardController {
     }
 
 
-    @PostMapping("/add_user_card")
-    public ResponseEntity<String> addCardToUser(@RequestBody CardDTO dto) {
-        cardService.addCardById(dto.getUserId(), dto);
-        return  ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body("Card: " + dto.getName() + ", added to user.");
-    }
-
-    @PostMapping("/delete_user_card")
-    public ResponseEntity<String> deleteUserCard(@RequestBody CardDTO dto) {
-        cardService.deleteCardById(dto);
+    @PostMapping("/create_card")
+    public ResponseEntity<BankCard> addCardToUser(@RequestBody CreateBankCardRequest request) {
+        BankCard card =  cardService.addCardById(request.getUserId(), request.getName());
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body("Card " + dto.getId() + " deleted.");
+                .body(card);
     }
 
-    @PostMapping("/get_user_card_by_id/{id}")
+    @PostMapping("/delete_card_by_id/{id}")
+    public ResponseEntity<String> deleteUserCard(@PathVariable("id") Long id) {
+        cardService.deleteCardById(id);
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body("Success.");
+    }
+
+    @PostMapping("/get_card_by_id/{id}")
     public ResponseEntity<BankCard> getCardById(@PathVariable("id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body(cardService.getCardById(id));
     }
 
-    @PostMapping("/get_user_cards_by_id/{id}")
+    @PostMapping("/get_cards_by_user_id/{id}")
     public ResponseEntity<List<BankCard>> getAllUserCards(@PathVariable("id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
