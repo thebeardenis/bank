@@ -9,11 +9,12 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Data
+
 @Entity
 @Table(name = "cards")
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class BankCard {
 
     @Id
@@ -30,6 +31,6 @@ public class BankCard {
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User userCard;
+    private User user;
 
 }

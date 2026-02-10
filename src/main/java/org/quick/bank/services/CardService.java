@@ -26,10 +26,10 @@ public class CardService {
     public BankCard addCardById(Long id, String name) {
         User user = userRepository.getReferenceById(id);
         var card = new BankCard();
-        card.setUserCard(user);
+        card.setUser(user);
         card.setBalance(BigDecimal.ZERO);
         card.setName(name);
-        card.setUserCard(user);
+        card.setUser(user);
         user.addCard(card);
         cardRepository.save(card);
         userRepository.save(user);

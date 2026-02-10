@@ -37,8 +37,8 @@ public class TransactionService {
         addToBalanceById(amount, id_to);
         takeFromBalanceById(amount, id_from);
         var transaction = new Transaction();
-        transaction.setUserFrom(bankCardRepository.getReferenceById(id_from).getUserCard());
-        transaction.setUserTo(bankCardRepository.getReferenceById(id_to).getUserCard());
+        transaction.setUserFrom(bankCardRepository.getReferenceById(id_from).getUser());
+        transaction.setUserTo(bankCardRepository.getReferenceById(id_to).getUser());
         transaction.setAmount(amount);
         transactionRepository.save(transaction);
         log.info("Saving transaction: {}", transaction);
