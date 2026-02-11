@@ -26,7 +26,7 @@ public class TransactionController {
 
 
     @PostMapping("/go_transaction")
-    public ResponseEntity<Map<String, Object>> transaction(@ModelAttribute TransactionRequest request) {
+    public ResponseEntity<Map<String, Object>> transaction(@Valid @ModelAttribute TransactionRequest request) {
         Transaction transaction = transactionService.transaction(request.getCardIdFrom(), request.getCardIdTo(), request.getAmount());
         Map<String, Object> result = new HashMap<>();
         result.put("message", "Card balance changed successfully.");

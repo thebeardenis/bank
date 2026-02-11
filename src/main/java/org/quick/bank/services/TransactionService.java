@@ -1,5 +1,6 @@
 package org.quick.bank.services;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.quick.bank.entity.models.BankCard;
 import org.quick.bank.exceptions.BalanceException;
@@ -18,21 +19,21 @@ import java.util.Objects;
 
 @Service
 @Slf4j
+@Transactional
 public class TransactionService {
 
     private final BankCardRepository bankCardRepository;
     private final TransactionRepository transactionRepository;
-    private final UserRepository userRepository;
 
-    public TransactionService(BankCardRepository bankCardRepository, TransactionRepository transactionRepository, UserRepository userRepository) {
+    public TransactionService(BankCardRepository bankCardRepository, TransactionRepository transactionRepository) {
         this.bankCardRepository = bankCardRepository;
         this.transactionRepository = transactionRepository;
-        this.userRepository = userRepository;
     }
 
 
     public Transaction transaction(Long id_from, Long id_to, BigDecimal amount) {
         if (Objects.equals(id_from, id_to)) {
+            log.error("Transaction failed id equals. Card1 {}, Card2 {}.", id_from, id_to);
             throw new InputDataException("id first user == id second user");
         }
         addToBalanceById(amount, id_to);
@@ -42,7 +43,7 @@ public class TransactionService {
         transaction.setCardFrom(bankCardRepository.getReferenceById(id_from));
         transaction.setAmount(amount);
         transactionRepository.save(transaction);
-        log.info("Saving transaction: {}", transaction);
+        log.info(transaction.toString());
         return transaction;
     }
 
@@ -50,7 +51,6 @@ public class TransactionService {
         var card = bankCardRepository.getReferenceById(id);
         card.setBalance(card.getBalance().add(amount));
         bankCardRepository.save(card);
-        log.info("Card with id {}: added to balance: {}, and now balance: {}", id, amount, card.getBalance());
     }
 
     private void takeFromBalanceById(BigDecimal amount, Long id) {
@@ -58,15 +58,14 @@ public class TransactionService {
         if (card.getBalance().compareTo(amount) >= 0) {
             card.setBalance(card.getBalance().subtract(amount));
             bankCardRepository.save(card);
-            log.info("Card with id {}: take from balance: {}, and now balance: {}", id, amount, card.getBalance());
         } else {
             throw new BalanceException("Balance on card: " + card + ", less as request in operation.");
         }
     }
 
-    public List<Transaction> getTransactionsByUserId(Long id) {
+    public List<Transaction> getTransactionsByUserId(Long user_id) {
         List<Transaction> transactions = new ArrayList<>();
-        for (BankCard card : bankCardRepository.getBankCardsByUser_Id(id)) {
+        for (BankCard card : bankCardRepository.getBankCardsByUser_Id(user_id)) {
             transactions.addAll(card.getTransactionsTo());
             transactions.addAll(card.getTransactionsFrom());
         }
