@@ -15,7 +15,7 @@
 <script src="/static/js/transactions.js"></script>
 
 <script th:inline="javascript">
-    const id = [[${id}]];
+    const id = [[${card_id}]];
     document.addEventListener('DOMContentLoaded', function() {
         loadDataTransactionsByCardId(id);
     });
