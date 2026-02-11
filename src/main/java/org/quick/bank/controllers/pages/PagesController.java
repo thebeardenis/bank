@@ -17,21 +17,15 @@ public class PagesController {
         return "index";
     }
 
-    @GetMapping("/view_cards/{user_id}")
-    public String viewCards(@PathVariable("user_id") Long id, Model model) {
+    @GetMapping("/view_cards/{id}")
+    public String viewCards(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user_id", id);
         return "cards";
     }
 
-    @GetMapping("/view_transactions/{user_id}")
-    public String viewTransactions(@PathVariable("user_id") Long id, Model model) {
+    @GetMapping("/view_transactions/{id}")
+    public String viewTransactions(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user_id", id);
         return "transactions";
-    }
-
-    @GetMapping("/view_card_transactions/{card_id}")
-    public String viewCardTransactions(@PathVariable("card_id") Long id, Model model) {
-        model.addAttribute("card_id", id);
-        return "card-transactions";
     }
 }

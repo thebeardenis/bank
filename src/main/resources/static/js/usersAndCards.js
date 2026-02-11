@@ -62,7 +62,6 @@ function loadDataCardsByUserId(id) {
                 <div style="border: 2px solid #000; border-radius: 4px; background-color: rgba(255, 255, 255, 0.5); padding: 5px;">
                 <p><strong>Name:</strong> ${card.name}</p>
                 <p><strong>Balance:</strong> ${card.balance}</p>
-                <a href="http://localhost:8080/view_card_transactions/${card.id}">View card transactions</a>
                 </div>
             `
         }
