@@ -43,6 +43,13 @@ public class TransactionController {
                 .body(transactionService.getTransactionsByUserId(id));
     }
 
+    @PostMapping("/get_transactions_by_card_id/{id}")
+    public ResponseEntity<List<Transaction>> getTransactionsByCardId(@PathVariable("id") Long id) {
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(transactionService.getTransactionsByCardId(id));
+    }
+
     @PostMapping("/get_transaction_by_id/{id}")
     public ResponseEntity<Transaction> getTransactionById(@PathVariable("id") Long id) {
         return ResponseEntity

@@ -145,3 +145,43 @@ function loadDataTransactionsByUserId(id) {
             `<p style="color: red;">Error: ${error.message}</p>`;
     });
 }
+
+function loadDataTransactionsByCardId(id) {
+    fetch('/api/transaction/get_transactions_by_card_id/' + id, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            client: 'browser',
+            timestamp: new Date().toISOString()
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Ошибка HTTP: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const container = document.getElementById('all-card-transactions-data');
+        container.innerHTML = '';
+
+                data.forEach(transaction => {
+                    const date = new Date(transaction.dealTime);
+                    const formattedDate = formatDateTime(date);
+
+                    container.innerHTML += `
+                        <div  style="border: 2px solid #000; border-radius: 4px; background-color: rgba(255, 255, 255, 0.5); padding: 2px; margin: 2px;">
+                            <p style="margin: 3px;"><strong>Дата:</strong> ${formattedDate}</p>
+                            <p style="margin: 3px;"><strong>Сумма:</strong> ${transaction.amount}</p>
+                        </div>
+                    `;
+                });
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        document.getElementById('all-card-transactions-data').innerHTML =
+            `<p style="color: red;">Error: ${error.message}</p>`;
+    });
+}
