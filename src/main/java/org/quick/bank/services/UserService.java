@@ -23,7 +23,6 @@ public class UserService {
     public User create(CreateUserRequest request) {
         User user = new User();
         if (userRepository.existsByEmail(request.getEmail())) {
-            log.error("Email {} already use.", request.getEmail());
             throw new UserEmailAlreadyUse("email already use");
         } else {
             user.setName(request.getName());
@@ -35,8 +34,8 @@ public class UserService {
     }
 
     public void deleteUserById(Long id) {
-        log.info("Deleted user with email: {}", userRepository.getReferenceById(id).getEmail());
         userRepository.deleteById(id);
+        log.info("Deleted user with id: {}", id);
     }
 
     public User getUserById(Long id) {
