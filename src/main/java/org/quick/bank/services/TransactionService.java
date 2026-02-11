@@ -73,6 +73,15 @@ public class TransactionService {
         return transactions;
     }
 
+    public List<Transaction> getTransactionsByCardId(Long card_id) {
+        List<Transaction> transactions = new ArrayList<>();
+        var card = bankCardRepository.getReferenceById(card_id);
+        transactions.addAll(card.getTransactionsTo());
+        transactions.addAll(card.getTransactionsFrom());
+        transactions.sort(Comparator.comparing(Transaction::getDealTime));
+        return transactions;
+    }
+
     public Transaction getTransactionById(Long id) {
         return transactionRepository.getReferenceById(id);
     }
