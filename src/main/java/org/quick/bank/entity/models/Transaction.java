@@ -44,4 +44,8 @@ public class Transaction {
         this.dealTime = LocalDateTime.now();
     }
 
+    public String toString() {
+        return "Id is " + id +  ". From: " + cardFrom.getUser().getEmail() + ", to " + cardTo.getUser().getEmail() + ", amount " + amount;
+    }
+
 }

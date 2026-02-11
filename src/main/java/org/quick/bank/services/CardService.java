@@ -23,14 +23,14 @@ public class CardService {
     }
 
 
-    public void addBalanceByCardId(Long id, BigDecimal amount) {
-        var card = cardRepository.getReferenceById(id);
+    public void addBalanceByCardId(Long card_id, BigDecimal amount) {
+        var card = cardRepository.getReferenceById(card_id);
         card.setBalance(card.getBalance().add(amount));
         cardRepository.save(card);
     }
 
-    public BankCard addCardById(Long id, String name) {
-        User user = userRepository.getReferenceById(id);
+    public BankCard addCardById(Long user_id, String name) {
+        User user = userRepository.getReferenceById(user_id);
         var card = new BankCard();
         card.setUser(user);
         card.setBalance(BigDecimal.ZERO);
@@ -42,15 +42,16 @@ public class CardService {
         return card;
     }
 
-    public void deleteCardById(Long id) {
-        cardRepository.deleteById(id);
+    public void deleteCardById(Long card_id) {
+        log.info("Delete card {}, from user {}", cardRepository.getReferenceById(card_id), cardRepository.getReferenceById(card_id).getUser().getEmail());
+        cardRepository.deleteById(card_id);
     }
 
-    public BankCard getCardById(Long id) {
-        return cardRepository.getReferenceById(id);
+    public BankCard getCardById(Long card_id) {
+        return cardRepository.getReferenceById(card_id);
     }
 
-    public List<BankCard> getCardsById(Long id) {
-        return userRepository.getReferenceById(id).getCards();
+    public List<BankCard> getCardsById(Long user_id) {
+        return userRepository.getReferenceById(user_id).getCards();
     }
 }
