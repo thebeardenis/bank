@@ -1,6 +1,7 @@
 package org.quick.bank.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.quick.bank.entity.models.BankCard;
 import org.quick.bank.exceptions.BalanceException;
 import org.quick.bank.exceptions.InputDataException;
 import org.quick.bank.entity.models.Transaction;
@@ -32,13 +33,13 @@ public class TransactionService {
 
     public Transaction transaction(Long id_from, Long id_to, BigDecimal amount) {
         if (Objects.equals(id_from, id_to)) {
-            throw new InputDataException("id first user = id second user");
+            throw new InputDataException("id first user == id second user");
         }
         addToBalanceById(amount, id_to);
         takeFromBalanceById(amount, id_from);
         var transaction = new Transaction();
-        transaction.setUserFrom(bankCardRepository.getReferenceById(id_from).getUser());
-        transaction.setUserTo(bankCardRepository.getReferenceById(id_to).getUser());
+        transaction.setCardTo(bankCardRepository.getReferenceById(id_to));
+        transaction.setCardFrom(bankCardRepository.getReferenceById(id_from));
         transaction.setAmount(amount);
         transactionRepository.save(transaction);
         log.info("Saving transaction: {}", transaction);
@@ -65,22 +66,16 @@ public class TransactionService {
 
     public List<Transaction> getTransactionsByUserId(Long id) {
         List<Transaction> transactions = new ArrayList<>();
-        transactions.addAll(getFromTransactionsById(id));
-        transactions.addAll(getToTransactionsById(id));
+        for (BankCard card : bankCardRepository.getBankCardsByUser_Id(id)) {
+            transactions.addAll(card.getTransactionsTo());
+            transactions.addAll(card.getTransactionsFrom());
+        }
         transactions.sort(Comparator.comparing(Transaction::getDealTime));
         return transactions;
     }
 
     public Transaction getTransactionById(Long id) {
         return transactionRepository.getReferenceById(id);
-    }
-
-    private List<Transaction> getFromTransactionsById(Long id) {
-        return userRepository.getReferenceById(id).getTransactionsFrom();
-    }
-
-    private List<Transaction> getToTransactionsById(Long id) {
-        return userRepository.getReferenceById(id).getTransactionsTo();
     }
 
     public List<Transaction> getLastTransactions(Long count) {

@@ -3,17 +3,19 @@ package org.quick.bank.entity.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name = "transactions")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Transaction {
 
     @Id
@@ -23,19 +25,19 @@ public class Transaction {
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_from_id")
-    private User userFrom;
+    @JoinColumn(name = "card_from_id")
+    private BankCard cardFrom;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_to_id")
-    private User userTo;
+    @JoinColumn(name = "card_to_id")
+    private BankCard cardTo;
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @Column(name = "dealTime", nullable = false)
+    @Column(name = "deal_time", nullable = false)
     private LocalDateTime dealTime;
 
     public Transaction() {

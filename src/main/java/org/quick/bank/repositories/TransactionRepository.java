@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    @Query(value = "SELECT * FROM transactions ORDER BY dealTime DESC LIMIT :count",
+    @Query(value = "SELECT * FROM transactions ORDER BY deal_time DESC LIMIT :count",
             nativeQuery = true)
     List<Transaction> getLastTransactions(@Param("count") Long count);
 }

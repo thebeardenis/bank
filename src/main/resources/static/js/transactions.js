@@ -10,10 +10,10 @@ function formatDateTime(date) {
     });
 }
 
-function transaction(idFrom, idTo, amount) {
+function transaction(cardIdFrom, cardIdTo, amount) {
     const formData = new URLSearchParams();
-    formData.append('idFrom', idFrom);
-    formData.append('idTo', idTo);
+    formData.append('cardIdFrom', cardIdFrom);
+    formData.append('cardIdTo', cardIdTo);
     formData.append('amount', amount);
 
     fetch('/api/transaction/go_transaction', {
@@ -30,12 +30,12 @@ function transaction(idFrom, idTo, amount) {
         const transactionId = data.transactionId;
         document.getElementById('myForm').innerHTML = `
                     <div>
-                        <label for="idFrom">From card id:</label>
-                        <input type="text" id="idFrom" name="idFrom" required>
+                        <label for="cardIdFrom">From card id:</label>
+                        <input type="number" id="cardIdFrom" name="cardIdFrom" required>
                     </div>
                     <div>
-                        <label for="idTo">To card id:</label>
-                        <input type="text" id="idTo" name="idTo" required>
+                        <label for="cardIdTo">To card id:</label>
+                        <input type="number" id="cardIdTo" name="cardIdTo" required>
                     </div>
                     <div>
                         <label for="amount">Amount:</label>
@@ -49,12 +49,12 @@ function transaction(idFrom, idTo, amount) {
         console.error('Ошибка:', error);
         document.getElementById('myForm').innerHTML = `
             <div>
-                <label for="idFrom">From card id:</label>
-                <input type="text" id="idFrom" name="idFrom" required>
+                <label for="cardIdFrom">From card id:</label>
+                <input type="number" id="cardIdFrom" name="cardIdFrom" required>
             </div>
             <div>
-                <label for="idTo">To card id:</label>
-                <input type="text" id="idTo" name="idTo" required>
+                <label for="cardIdTo">To card id:</label>
+                <input type="number" id="cardIdTo" name="cardIdTo" required>
             </div>
             <div>
                 <label for="amount">Amount:</label>

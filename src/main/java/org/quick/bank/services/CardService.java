@@ -23,6 +23,12 @@ public class CardService {
     }
 
 
+    public void addBalanceByCardId(Long id, BigDecimal amount) {
+        var card = cardRepository.getReferenceById(id);
+        card.setBalance(card.getBalance().add(amount));
+        cardRepository.save(card);
+    }
+
     public BankCard addCardById(Long id, String name) {
         User user = userRepository.getReferenceById(id);
         var card = new BankCard();

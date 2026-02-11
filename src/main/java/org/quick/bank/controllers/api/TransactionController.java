@@ -1,6 +1,7 @@
 package org.quick.bank.controllers.api;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.quick.bank.entity.models.Transaction;
 import org.quick.bank.entity.requests.TransactionRequest;
 import org.quick.bank.services.TransactionService;
@@ -26,7 +27,7 @@ public class TransactionController {
 
     @PostMapping("/go_transaction")
     public ResponseEntity<Map<String, Object>> transaction(@ModelAttribute TransactionRequest request) {
-        Transaction transaction = transactionService.transaction(request.getUserIdFrom(), request.getUserIdTo(), request.getAmount());
+        Transaction transaction = transactionService.transaction(request.getCardIdFrom(), request.getCardIdTo(), request.getAmount());
         Map<String, Object> result = new HashMap<>();
         result.put("message", "Card balance changed successfully.");
         result.put("transaction", transaction);

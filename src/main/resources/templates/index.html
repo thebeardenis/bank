@@ -15,12 +15,12 @@
             <div>
                 <form id="myForm">>
                     <div>
-                        <label for="idFrom">From card id:</label>
-                        <input type="text" id="idFrom" name="idFrom" required>
+                        <label for="cardIdFrom">From card id:</label>
+                        <input type="number" id="cardIdFrom" name="cardIdFrom" required>
                     </div>
                     <div>
-                        <label for="idTo">To card id:</label>
-                        <input type="text" id="idTo" name="idTo" required>
+                        <label for="cardIdTo">To card id:</label>
+                        <input type="number" id="cardIdTo" name="cardIdTo" required>
                     </div>
                     <div>
                         <label for="amount">Amount:</label>
@@ -53,10 +53,10 @@
     });
     document.getElementById('myForm').addEventListener('submit', function(event) {
         event.preventDefault();
-        let idFrom = this.idFrom.value;
-        let idTo = this.idTo.value;
+        let cardIdFrom = this.cardIdFrom.value;
+        let cardIdTo = this.cardIdTo.value;
         let amount = this.amount.value;
-        transaction(idFrom, idTo, amount);
+        transaction(cardIdFrom, cardIdTo, amount);
   });
 </script>
 
