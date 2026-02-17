@@ -2,6 +2,7 @@ package org.quick.bank.controllers.api;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.quick.bank.entity.DTOs.TransactionDTO;
 import org.quick.bank.entity.models.Transaction;
 import org.quick.bank.entity.requests.TransactionRequest;
 import org.quick.bank.services.TransactionService;
@@ -51,10 +52,10 @@ public class TransactionController {
     }
 
     @PostMapping("/get_transaction_by_id/{id}")
-    public ResponseEntity<Transaction> getTransactionById(@PathVariable("id") Long id) {
+    public ResponseEntity<TransactionDTO> getTransactionById(@PathVariable("id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(transactionService.getTransactionById(id));
+                .body(new TransactionDTO(transactionService.getTransactionById(id)));
     }
 
     @PostMapping("/get_last_transactions/{count}")

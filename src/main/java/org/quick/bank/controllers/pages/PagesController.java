@@ -34,4 +34,10 @@ public class PagesController {
         model.addAttribute("card_id", id);
         return "card-transactions";
     }
+
+    @GetMapping("/view_transaction/{transaction_id}")
+    public String viewTransaction(@PathVariable("transaction_id") Long id, Model model) {
+        model.addAttribute("transaction_id", id);
+        return "transaction";
+    }
 }

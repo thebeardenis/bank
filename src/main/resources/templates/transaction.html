@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction</title>
+</head>
+<body>
+
+<div>
+    <h2>About transaction:</h2>
+    <div id="transaction-data"></div>
+</div>
+
+<script src="/static/js/transactions.js"></script>
+
+<script th:inline="javascript">
+    const id = [[${transaction_id}]];
+    document.addEventListener('DOMContentLoaded', function() {
+        loadDataByTransactionId(id);
+    });
+</script>
+
+</body>
+
+</html>
