@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication(scanBasePackages = "org.quick.bank")
 @EntityScan(basePackages = "org.quick.bank.entity.models")
 @EnableJpaRepositories(basePackages = "org.quick.bank.repositories")
+//TODO final variables to record class with annotation @Value, Clean code
 public class BankApplication {
     public static void main(String[] args) {
         SpringApplication.run(BankApplication.class, args);
