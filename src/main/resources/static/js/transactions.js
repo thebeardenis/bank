@@ -117,8 +117,10 @@ function loadDataOfAllTransactions(count) {
 
             container.innerHTML += `
                 <div  style="border: 2px solid #000; border-radius: 4px; background-color: rgba(255, 255, 255, 0.5); padding: 2px; margin: 2px;">
-                    <p style="margin: 3px;"><strong>Дата:</strong> ${formattedDate}</p>
-                    <p style="margin: 3px;"><strong>Сумма:</strong> ${transaction.amount}</p>
+                    <p style="margin: 3px;"><strong>Sender card:</strong> <a href="http://localhost:8080/view_card_transactions/${transaction.cardFromId}"> CardFrom </a></p>
+                    <p style="margin: 3px;"><strong>Recipient card:</strong> <a href="http://localhost:8080/view_card_transactions/${transaction.cardToId}"> CardTo </a></p>
+                    <p style="margin: 3px;"><strong>Date:</strong> ${formattedDate}</p>
+                    <p style="margin: 3px;"><strong>Amount:</strong> ${transaction.amount}</p>
                 </div>
             `;
         });
@@ -157,8 +159,10 @@ function loadDataTransactionsByUserId(id) {
 
                     container.innerHTML += `
                         <div  style="border: 2px solid #000; border-radius: 4px; background-color: rgba(255, 255, 255, 0.5); padding: 2px; margin: 2px;">
-                            <p style="margin: 3px;"><strong>Дата:</strong> ${formattedDate}</p>
-                            <p style="margin: 3px;"><strong>Сумма:</strong> ${transaction.amount}</p>
+                            <p style="margin: 3px;"><strong>Sender card:</strong> <a href="http://localhost:8080/view_card_transactions/${transaction.cardFromId}"> CardFrom </a></p>
+                            <p style="margin: 3px;"><strong>Recipient card:</strong> <a href="http://localhost:8080/view_card_transactions/${transaction.cardToId}"> CardTo </a></p>
+                            <p style="margin: 3px;"><strong>Date:</strong> ${formattedDate}</p>
+                            <p style="margin: 3px;"><strong>Amount:</strong> ${transaction.amount}</p>
                         </div>
                     `;
                 });
@@ -197,8 +201,10 @@ function loadDataTransactionsByCardId(id) {
 
                     container.innerHTML += `
                         <div  style="border: 2px solid #000; border-radius: 4px; background-color: rgba(255, 255, 255, 0.5); padding: 2px; margin: 2px;">
-                            <p style="margin: 3px;"><strong>Дата:</strong> ${formattedDate}</p>
-                            <p style="margin: 3px;"><strong>Сумма:</strong> ${transaction.amount}</p>
+                            <p style="margin: 3px;"><strong>Sender card:</strong> <a href="http://localhost:8080/view_card_transactions/${transaction.cardFromId}"> CardFrom </a></p>
+                            <p style="margin: 3px;"><strong>Recipient card:</strong> <a href="http://localhost:8080/view_card_transactions/${transaction.cardToId}"> CardTo </a></p>
+                            <p style="margin: 3px;"><strong>Date:</strong> ${formattedDate}</p>
+                            <p style="margin: 3px;"><strong>Amount:</strong> ${transaction.amount}</p>
                         </div>
                     `;
                 });
@@ -235,10 +241,10 @@ function loadDataByTransactionId(id) {
 
         container.innerHTML += `
             <div  style="border: 2px solid #000; border-radius: 4px; background-color: rgba(255, 255, 255, 0.5); padding: 2px; margin: 2px;">
-                <p style="margin: 3px;"><strong>Карта отправителя:</strong> <a href="http://localhost:8080/view_card_transactions/${data.cardFromId}"> CardFrom </a></p>
-                <p style="margin: 3px;"><strong>Карта получателя:</strong> <a href="http://localhost:8080/view_card_transactions/${data.cardToId}"> CardTo </a></p>
-                <p style="margin: 3px;"><strong>Дата совершения транзакции:</strong> ${formattedDate}</p>
-                <p style="margin: 3px;"><strong>Сумма перевода:</strong> ${data.amount}</p>
+                <p style="margin: 3px;"><strong>Sender card:</strong> <a href="http://localhost:8080/view_card_transactions/${data.cardFromId}"> CardFrom </a></p>
+                <p style="margin: 3px;"><strong>Recipient card:</strong> <a href="http://localhost:8080/view_card_transactions/${data.cardToId}"> CardTo </a></p>
+                <p style="margin: 3px;"><strong>Date of transaction:</strong> ${formattedDate}</p>
+                <p style="margin: 3px;"><strong>Amount:</strong> ${data.amount}</p>
             </div>
         `;
     })

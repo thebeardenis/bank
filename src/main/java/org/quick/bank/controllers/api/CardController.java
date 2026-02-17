@@ -1,6 +1,7 @@
 package org.quick.bank.controllers.api;
 
 import jakarta.transaction.Transactional;
+import org.quick.bank.entity.DTOs.BankCardDTO;
 import org.quick.bank.entity.models.BankCard;
 import org.quick.bank.entity.requests.CreateBankCardRequest;
 import org.quick.bank.services.CardService;
@@ -23,11 +24,11 @@ public class CardController {
 
 
     @PostMapping("/create_card")
-    public ResponseEntity<BankCard> addCardToUser(@RequestBody CreateBankCardRequest request) {
+    public ResponseEntity<BankCardDTO> addCardToUser(@RequestBody CreateBankCardRequest request) {
         BankCard card =  cardService.addCardById(request.getUserId(), request.getName());
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(card);
+                .body(new BankCardDTO(card));
     }
 
     @PostMapping("/delete_card_by_id/{id}")
@@ -39,16 +40,19 @@ public class CardController {
     }
 
     @PostMapping("/get_card_by_id/{id}")
-    public ResponseEntity<BankCard> getCardById(@PathVariable("id") Long id) {
+    public ResponseEntity<BankCardDTO> getCardById(@PathVariable("id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(cardService.getCardById(id));
+                .body(new BankCardDTO(cardService.getCardById(id)));
     }
 
     @PostMapping("/get_cards_by_user_id/{id}")
-    public ResponseEntity<List<BankCard>> getAllUserCards(@PathVariable("id") Long id) {
+    public ResponseEntity<List<BankCardDTO>> getAllUserCards(@PathVariable("id") Long id) {
+        List<BankCardDTO> cardsDTOs = cardService.getCardsById(id).stream()
+                .map(BankCardDTO::new)
+                .toList();
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(cardService.getCardsById(id));
+                .body(cardsDTOs);
     }
 }

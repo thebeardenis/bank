@@ -2,6 +2,7 @@ package org.quick.bank.controllers.api;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.quick.bank.entity.DTOs.UserDTO;
 import org.quick.bank.entity.models.User;
 import org.quick.bank.entity.requests.CreateUserRequest;
 import org.quick.bank.services.UserService;
@@ -24,11 +25,11 @@ public class UserController {
 
 
     @PostMapping("/create_user")
-    public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody CreateUserRequest request) {
         User user = userService.create(request);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(user);
+                .body(new UserDTO(user));
     }
 
     @PostMapping("/delete_user_by_id/{id}")
@@ -40,17 +41,19 @@ public class UserController {
     }
 
     @PostMapping("/get_user_by_id/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(userService.getUserById(id));
+                .body(new UserDTO(userService.getUserById(id)));
     }
 
     @PostMapping("/get_all_users")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> usersDTOs = userService.getAllUsers().stream()
+                .map(UserDTO::new)
+                .toList();
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(users);
+                .body(usersDTOs);
     }
 }

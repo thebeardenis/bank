@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/transaction")
@@ -31,24 +31,24 @@ public class TransactionController {
         Transaction transaction = transactionService.transaction(request.getCardIdFrom(), request.getCardIdTo(), request.getAmount());
         Map<String, Object> result = new HashMap<>();
         result.put("message", "Card balance changed successfully.");
-        result.put("transaction", transaction);
+        result.put("transaction", new TransactionDTO(transaction));
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(result);
     }
 
     @PostMapping("/get_transactions_by_user_id/{id}")
-    public ResponseEntity<List<Transaction>> getTransactionsByUserId(@PathVariable("id") Long id) {
+    public ResponseEntity<List<TransactionDTO>> getTransactionsByUserId(@PathVariable("id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(transactionService.getTransactionsByUserId(id));
+                .body(transactionsToTransactionsDTOs(transactionService.getTransactionsByUserId(id)));
     }
 
     @PostMapping("/get_transactions_by_card_id/{id}")
-    public ResponseEntity<List<Transaction>> getTransactionsByCardId(@PathVariable("id") Long id) {
+    public ResponseEntity<List<TransactionDTO>> getTransactionsByCardId(@PathVariable("id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(transactionService.getTransactionsByCardId(id));
+                .body(transactionsToTransactionsDTOs(transactionService.getTransactionsByCardId(id)));
     }
 
     @PostMapping("/get_transaction_by_id/{id}")
@@ -59,9 +59,15 @@ public class TransactionController {
     }
 
     @PostMapping("/get_last_transactions/{count}")
-    public ResponseEntity<List<Transaction>> getLastTransactions(@PathVariable("count") Long count) {
+    public ResponseEntity<List<TransactionDTO>> getLastTransactions(@PathVariable("count") Long count) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(transactionService.getLastTransactions(count));
+                .body(transactionsToTransactionsDTOs(transactionService.getLastTransactions(count)));
+    }
+
+    private List<TransactionDTO> transactionsToTransactionsDTOs(List<Transaction> transactions) {
+        return transactions.stream()
+                .map(TransactionDTO::new)
+                .toList();
     }
 }
