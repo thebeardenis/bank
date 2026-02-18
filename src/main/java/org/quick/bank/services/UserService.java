@@ -3,7 +3,7 @@ package org.quick.bank.services;
 import lombok.extern.slf4j.Slf4j;
 import org.quick.bank.entity.models.User;
 import org.quick.bank.exceptions.*;
-import org.quick.bank.entity.requests.CreateUserRequest;
+import org.quick.bank.entity.DTOs.requests.CreateUserRequest;
 import org.quick.bank.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
