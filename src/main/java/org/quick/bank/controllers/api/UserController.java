@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.quick.bank.entity.DTOs.UserDTO;
 import org.quick.bank.entity.models.User;
-import org.quick.bank.entity.DTOs.requests.CreateUserRequest;
+import org.quick.bank.entity.requests.CreateUserRequest;
 import org.quick.bank.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

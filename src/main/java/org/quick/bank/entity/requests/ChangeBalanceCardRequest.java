@@ -1,4 +1,4 @@
-package org.quick.bank.entity.DTOs.requests;
+package org.quick.bank.entity.requests;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

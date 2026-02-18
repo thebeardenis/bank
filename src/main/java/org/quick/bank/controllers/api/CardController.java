@@ -3,7 +3,7 @@ package org.quick.bank.controllers.api;
 import jakarta.transaction.Transactional;
 import org.quick.bank.entity.DTOs.BankCardDTO;
 import org.quick.bank.entity.models.BankCard;
-import org.quick.bank.entity.DTOs.requests.CreateBankCardRequest;
+import org.quick.bank.entity.requests.CreateBankCardRequest;
 import org.quick.bank.services.CardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

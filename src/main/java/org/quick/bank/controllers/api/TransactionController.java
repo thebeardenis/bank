@@ -4,13 +4,15 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.quick.bank.entity.DTOs.TransactionDTO;
 import org.quick.bank.entity.models.Transaction;
-import org.quick.bank.entity.DTOs.requests.TransactionRequest;
+import org.quick.bank.entity.requests.TransactionRequest;
 import org.quick.bank.services.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/transaction")

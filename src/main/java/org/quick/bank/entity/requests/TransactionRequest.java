@@ -1,4 +1,4 @@
-package org.quick.bank.entity.DTOs.requests;
+package org.quick.bank.entity.requests;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
