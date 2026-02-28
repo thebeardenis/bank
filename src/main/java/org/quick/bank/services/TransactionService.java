@@ -3,12 +3,15 @@ package org.quick.bank.services;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.quick.bank.entity.models.BankCard;
+import org.quick.bank.events.TransactionEvent;
 import org.quick.bank.exceptions.BalanceException;
 import org.quick.bank.exceptions.InputDataException;
 import org.quick.bank.entity.models.Transaction;
 import org.quick.bank.repositories.BankCardRepository;
 import org.quick.bank.repositories.TransactionRepository;
 import org.quick.bank.repositories.UserRepository;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
@@ -24,10 +28,14 @@ public class TransactionService {
 
     private final BankCardRepository bankCardRepository;
     private final TransactionRepository transactionRepository;
+    private final KafkaTemplate<String , TransactionEvent> kafkaTemplate;
 
-    public TransactionService(BankCardRepository bankCardRepository, TransactionRepository transactionRepository) {
+    private static final String TRANSACTION_TOPIC = "transactions-topic";
+
+    public TransactionService(BankCardRepository bankCardRepository, TransactionRepository transactionRepository, KafkaTemplate<String, TransactionEvent> kafkaTemplate) {
         this.bankCardRepository = bankCardRepository;
         this.transactionRepository = transactionRepository;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
 
@@ -36,15 +44,46 @@ public class TransactionService {
             log.error("Transaction failed id equals. Card1 {}, Card2 {}.", id_from, id_to);
             throw new InputDataException("id first user == id second user");
         }
+        BankCard cardFrom = bankCardRepository.getReferenceById(id_from);
+        BankCard cardTo = bankCardRepository.getReferenceById(id_to);
+
         addToBalanceById(amount, id_to);
         takeFromBalanceById(amount, id_from);
+
         var transaction = new Transaction();
-        transaction.setCardTo(bankCardRepository.getReferenceById(id_to));
-        transaction.setCardFrom(bankCardRepository.getReferenceById(id_from));
+        transaction.setCardTo(cardTo);
+        transaction.setCardFrom(cardFrom);
         transaction.setAmount(amount);
-        transactionRepository.save(transaction);
-        log.info(transaction.toString());
+
+        Transaction savedTransaction = transactionRepository.save(transaction);
+
+        TransactionEvent event = new TransactionEvent(
+                savedTransaction.getId(),
+                cardFrom.getId(),
+                cardTo.getId(),
+                cardFrom.getUser().getEmail(),
+                cardTo.getUser().getEmail(),
+                amount,
+                savedTransaction.getDealTime(),
+                "TRANSACTION_CREATED"
+        );
+        sendTransactionEvent(event);
+
         return transaction;
+    }
+
+    private void sendTransactionEvent(TransactionEvent event) {
+        CompletableFuture<SendResult<String, TransactionEvent>> future =
+                kafkaTemplate.send(TRANSACTION_TOPIC, String.valueOf(event.getTransactionId()), event);
+
+        future.whenComplete((result, ex) -> {
+            if (ex == null) {
+                log.info("Transaction event sent to Kafka successfully: {}, offset: {}",
+                        event, result.getRecordMetadata().offset());
+            } else {
+                log.error("Failed to send transaction event to Kafka: {}", event, ex);
+            }
+        });
     }
 
     private void addToBalanceById(BigDecimal amount, Long id) {

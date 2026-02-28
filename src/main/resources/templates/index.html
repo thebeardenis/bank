@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All users</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </head>
 
 <body>
@@ -45,11 +47,14 @@
 
 <script src="/static/js/usersAndCards.js"></script>
 <script src="/static/js/transactions.js"></script>
+<script src="/static/js/script.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         loadDataOfAllUsers();
         loadDataOfAllTransactions(10);
+
+        initWebSocketForLastTransactions();
     });
     document.getElementById('myForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -58,6 +63,9 @@
         let amount = this.amount.value;
         transaction(cardIdFrom, cardIdTo, amount);
   });
+    window.addEventListener('beforeunload', function() {
+            disconnectWebSocket();
+        });
 </script>
 
 </body>
