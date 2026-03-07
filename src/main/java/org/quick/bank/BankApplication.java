@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication(scanBasePackages = "org.quick.bank")
 @EntityScan(basePackages = "org.quick.bank.entity.models")
 @EnableJpaRepositories(basePackages = "org.quick.bank.repositories")
-//TODO create producer service and use him in controller
+//TODO create order kafka producer and use him in service
 public class BankApplication {
     public static void main(String[] args) {
         SpringApplication.run(BankApplication.class, args);
