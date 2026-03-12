@@ -4,12 +4,9 @@ COPY target/*.jar app.jar
 RUN java -Djarmode=tools -jar app.jar extract --layers --destination extracted
 
 FROM openjdk:25-ea-21-jdk-slim
-
 VOLUME /tmp
-
 RUN useradd -ms /bin/bash spring-user
 USER spring-user
-
 WORKDIR /application
 
 COPY --from=layers /application/extracted/dependencies/ ./

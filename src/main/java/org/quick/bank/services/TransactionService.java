@@ -7,6 +7,7 @@ import org.quick.bank.events.TransactionEvent;
 import org.quick.bank.exceptions.BalanceException;
 import org.quick.bank.exceptions.InputDataException;
 import org.quick.bank.entity.models.Transaction;
+import org.quick.bank.kafka.OrderProducer;
 import org.quick.bank.repositories.BankCardRepository;
 import org.quick.bank.repositories.TransactionRepository;
 import org.quick.bank.repositories.UserRepository;
@@ -28,14 +29,13 @@ public class TransactionService {
 
     private final BankCardRepository bankCardRepository;
     private final TransactionRepository transactionRepository;
-    private final KafkaTemplate<String , TransactionEvent> kafkaTemplate;
+    private final OrderProducer orderProducer;
 
-    private static final String TRANSACTION_TOPIC = "transactions-topic";
 
-    public TransactionService(BankCardRepository bankCardRepository, TransactionRepository transactionRepository, KafkaTemplate<String, TransactionEvent> kafkaTemplate) {
+    public TransactionService(BankCardRepository bankCardRepository, TransactionRepository transactionRepository, OrderProducer orderProducer) {
         this.bankCardRepository = bankCardRepository;
         this.transactionRepository = transactionRepository;
-        this.kafkaTemplate = kafkaTemplate;
+        this.orderProducer = orderProducer;
     }
 
 
@@ -67,23 +67,9 @@ public class TransactionService {
                 savedTransaction.getDealTime(),
                 "TRANSACTION_CREATED"
         );
-        sendTransactionEvent(event);
+        orderProducer.send(event);
 
         return transaction;
-    }
-
-    private void sendTransactionEvent(TransactionEvent event) {
-        CompletableFuture<SendResult<String, TransactionEvent>> future =
-                kafkaTemplate.send(TRANSACTION_TOPIC, String.valueOf(event.getTransactionId()), event);
-
-        future.whenComplete((result, ex) -> {
-            if (ex == null) {
-                log.info("Transaction event sent to Kafka successfully: {}, offset: {}",
-                        event, result.getRecordMetadata().offset());
-            } else {
-                log.error("Failed to send transaction event to Kafka: {}", event, ex);
-            }
-        });
     }
 
     private void addToBalanceById(BigDecimal amount, Long id) {

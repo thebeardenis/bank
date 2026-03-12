@@ -1,2 +1,8 @@
-At first - backend RESTP API and DB, which implemented bank MVP.
-At second - primitive frontend.
+# Monolith bank application. 
+## Stack:
+* Spring Boot
+* REST API 
+* Postgresql DB 
+* Kafka 
+* Docker 
+* primitive Frontend 
