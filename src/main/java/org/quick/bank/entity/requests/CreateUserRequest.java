@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class CreateUserRequest {
 
     @NotBlank(message = "Email must be.")
-    @Email(message = "Incorrect email format.")
+    @Email(message = "Incorrect email format..")
     @Size(max = 200, message = "Email shouldn't have more than 200 symbols.")
     private String email;
 
