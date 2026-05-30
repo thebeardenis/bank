@@ -1,4 +1,4 @@
-# Monolith bank application. 
+# Bank application. 
 ## Stack:
 * Spring Boot
 * REST API 
