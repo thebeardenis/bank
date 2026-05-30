@@ -12,9 +12,9 @@ services:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 3s
+      timeout: 2s
+      retries: 10
     networks:
       - bank-network
 
@@ -30,9 +30,9 @@ services:
       - bank-network
     healthcheck:
       test: [ "CMD", "nc", "-vz", "localhost", "2181" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 3s
+      timeout: 2s
+      retries: 10
 
   kafka:
     image: confluentinc/cp-kafka:7.5.0
@@ -51,9 +51,9 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     healthcheck:
       test: ["CMD", "kafka-topics", "--list", "--bootstrap-server", "localhost:9092"]
-      interval: 15s
-      timeout: 5s
-      retries: 5
+      interval: 3s
+      timeout: 2s
+      retries: 10
     networks:
       - bank-network
 
